@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কিতাবনামা - কুতুব ট্র্যাকার</title>
+    <style>
+        :root {
+            --primary-color: #1b4332;
+            --accent-color: #2d6a4f;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-bottom: 30px;
+        }
+
+        /* হেডার ও নেভিগেশন */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* কার্ড স্টাইল */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        /* প্রোফাইল সেকশন */
+        .profile-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background-color: #d8f3dc;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            border: 2px solid var(--accent-color);
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info h3 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .profile-info p {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        /* স্ট্যাটিস্টিক্স কাউন্টার */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            background-color: #f1f8f5;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card .num {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: #555;
+        }
+
+        /* ফর্ম ও ইনপুট */
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-color);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            margin-top: 8px;
+        }
+
+        /* কিতাব লিস্ট */
+        .book-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .book-item:last-child {
+            border-bottom: none;
+        }
+
+        .book-title {
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .book-meta {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .badge {
+            background-color: #e2e3e5;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+        }
+
+        /* হিডেন ক্লাস */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- হেডার -->
+    <header>
+        <div class="logo">📖 কিতাবনামা</div>
+        <span style="font-size: 12px; background: #2d6a4f; padding: 4px 8px; border-radius: 4px;">গেস্ট মোড</span>
+    </header>
+
+    <div class="container">
+
+        <!-- ১. প্রোফাইল সামারি কার্ড -->
+        <div class="card">
+            <div class="profile-box">
+                <div class="avatar" id="user-avatar-display">👤</div>
+                <div class="profile-info">
+                    <h3 id="display-name">তালিবুল ইলম</h3>
+                    <p id="display-bio">কুতুব ও মুতালাআ ট্র্যাকার</p>
+                </div>
+            </div>
+
+            <!-- স্ট্যাটস -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="num" id="total-books-count">০</div>
+                    <div class="label">মোট পঠিত কিতাব</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num" id="total-pages-count">০</div>
+                    <div class="label">মোট পড়া পৃষ্ঠা</div>
+                </div>
+            </div>
+
+            <button class="btn-secondary" onclick="toggleProfileEdit()" style="margin-top: 15px; font-size: 13px; padding: 8px;">⚙️ প্রোফাইল এডিট করুন</button>
+        </div>
+
+        <!-- ২. প্রোফাইল এডিট করার হিডেন ফর্ম -->
+        <div class="card hidden" id="profile-edit-card">
+            <h4 style="margin-bottom: 12px;">প্রোফাইল কাস্টমাইজ করুন</h4>
+            <div class="form-group">
+                <label>আপনার নাম</label>
+                <input type="text" id="edit-name-input" placeholder="যেমন: জুনায়েদ এমদাদ">
+            </div>
+            <div class="form-group">
+                <label>সংক্ষিপ্ত বায়ো</label>
+                <input type="text" id="edit-bio-input" placeholder="যেমন: তাফসীর ও ফিকহ অনুরাগী">
+            </div>
+            <button onclick="saveProfile()">সেভ করুন</button>
+        </div>
+
+        <!-- ৩. নতুন কিতাব যোগ করার ফর্ম -->
+        <div class="card">
+            <h4 style="margin-bottom: 12px;">➕ নতুন কিতাব এনট্রি দিন</h4>
+            <form id="add-book-form" onsubmit="addBook(event)">
+                <div class="form-group">
+                    <label>কিতাবের নাম *</label>
+                    <input type="text" id="book-title" required placeholder="যেমন: রিয়াদুস সালেহীন">
+                </div>
+                <div class="form-group">
+                    <label>লেখক / মুসান্নিফ</label>
+                    <input type="text" id="book-author" placeholder="যেমন: ইমাম নববী (রহ.)">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>ফন / বিষয়</label>
+                        <select id="book-genre">
+                            <option value="হাদীস">হাদীস</option>
+                            <option value="তাফসীর">তাফসীর</option>
+                            <option value="ফিকহ">ফিকহ</option>
+                            <option value="তারীখ">তারীখ/সীরত</option>
+                            <option value="আদব">আদব/অনুবাদ</option>
+                            <option value="অন্যান্য">অন্যান্য</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>মোট পৃষ্ঠা</label>
+                        <input type="number" id="book-pages" placeholder="যেমন: ৪৫০">
+                    </div>
+                </div>
+                <button type="submit">তালিকায় যুক্ত করুন</button>
+            </form>
+        </div>
+
+        <!-- ৪. পঠিত কিতাবের তালিকা -->
+        <div class="card">
+            <h4 style="margin-bottom: 12px;">📚 আমার পঠিত কিতাবসমূহ</h4>
+            <div id="books-list-container">
+                <p style="text-align: center; color: #888; font-size: 13px;">এখনো কোনো কিতাব যুক্ত করা হয়নি।</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- জাভাস্ক্রিপ্ট লজিক -->
+    <script>
+        // লোকাল স্টোরেজ থেকে ডেটা নিয়ে আসা
+        let userData = JSON.parse(localStorage.getItem('kitabnama_user')) || {
+            name: "তালিবুল ইলম",
+            bio: "কুতুব ও মুতালাআ ট্র্যাকার"
+        };
+
+        let booksList = JSON.parse(localStorage.getItem('kitabnama_books')) || [];
+
+        // পেজ লোড হলে ডেটা শো করা
+        window.onload = function() {
+            renderProfile();
+            renderBooks();
+        };
+
+        // প্রোফাইল দেখানোর ফাংশন
+        function renderProfile() {
+            document.getElementById('display-name').innerText = userData.name;
+            document.getElementById('display-bio').innerText = userData.bio;
+            document.getElementById('user-avatar-display').innerText = userData.name.charAt(0).toUpperCase();
+        }
+
+        // প্রোফাইল এডিট বক্স টগল
+        function toggleProfileEdit() {
+            const editCard = document.getElementById('profile-edit-card');
+            editCard.classList.toggle('hidden');
+            document.getElementById('edit-name-input').value = userData.name;
+            document.getElementById('edit-bio-input').value = userData.bio;
+        }
+
+        // প্রোফাইল সেভ করা
+        function saveProfile() {
+            const nameInput = document.getElementById('edit-name-input').value.trim();
+            const bioInput = document.getElementById('edit-bio-input').value.trim();
+
+            if(nameInput !== "") {
+                userData.name = nameInput;
+                userData.bio = bioInput || "কুতুব ও মুতালাআ ট্র্যাকার";
+                localStorage.setItem('kitabnama_user', JSON.stringify(userData));
+                renderProfile();
+                toggleProfileEdit();
+            }
+        }
+
+        // কিতাব যোগ করা
+        function addBook(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('book-title').value.trim();
+            const author = document.getElementById('book-author').value.trim() || 'অজ্ঞাত';
+            const genre = document.getElementById('book-genre').value;
+            const pages = parseInt(document.getElementById('book-pages').value) || 0;
+
+            const newBook = {
+                id: Date.now(),
+                title: title,
+                author: author,
+                genre: genre,
+                pages: pages
+            };
+
+            booksList.unshift(newBook);
+            localStorage.setItem('kitabnama_books', JSON.stringify(booksList));
+            
+            // ফর্ম রিক্লিয়ার করা
+            document.getElementById('add-book-form').reset();
+            renderBooks();
+        }
+
+        // কিতাবের তালিকা ও হিসাব আপডেট
+        function renderBooks() {
+            const container = document.getElementById('books-list-container');
+            let totalPages = 0;
+
+            if (booksList.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #888; font-size: 13px;">এখনো কোনো কিতাব যুক্ত করা হয়নি।</p>';
+            } else {
+                container.innerHTML = '';
+                booksList.forEach(book => {
+                    totalPages += book.pages;
+                    container.innerHTML += `
+                        <div class="book-item">
+                            <div>
+                                <div class="book-title">${book.title}</div>
+                                <div class="book-meta">${book.author} • ${book.pages} পৃষ্ঠা</div>
+                            </div>
+                            <span class="badge">${book.genre}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            // কাউন্টার আপডেট
+            document.getElementById('total-books-count').innerText = booksList.length;
+            document.getElementById('total-pages-count').innerText = totalPages;
+        }
+    </script>
+</body>
+      </html>
+              
