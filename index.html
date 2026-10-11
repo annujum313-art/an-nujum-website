@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>কিতাবনামা - কুতুব ট্র্যাকার</title>
+    <title>কিতাবনামা - প্রিমিয়াম কুতুব ও মুতালাআ ট্র্যাকার</title>
     <style>
         :root {
             --primary-color: #1b4332;
             --accent-color: #2d6a4f;
-            --bg-color: #f8f9fa;
+            --light-bg: #f8f9fa;
             --card-bg: #ffffff;
             --text-color: #212529;
+            --muted-text: #6c757d;
+            --danger-color: #e63946;
+            --warning-color: #f4a261;
+            --border-radius: 12px;
         }
 
         * {
@@ -21,12 +25,12 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--light-bg);
             color: var(--text-color);
-            padding-bottom: 30px;
+            padding-bottom: 40px;
         }
 
-        /* হেডার ও নেভিগেশন */
+        /* হেডার */
         header {
             background-color: var(--primary-color);
             color: white;
@@ -34,16 +38,30 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .privacy-badge {
+            font-size: 11px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
         }
 
         .container {
-            max-width: 600px;
+            max-width: 650px;
             margin: 20px auto;
             padding: 0 15px;
         }
@@ -51,149 +69,250 @@
         /* কার্ড স্টাইল */
         .card {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: var(--border-radius);
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #e9ecef;
         }
 
-        /* প্রোফাইল সেকশন */
-        .profile-box {
+        /* প্রোফাইল কার্ড */
+        .profile-header {
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
         .avatar {
-            width: 65px;
-            height: 65px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             background-color: #d8f3dc;
             color: var(--primary-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 30px;
             font-weight: bold;
-            border: 2px solid var(--accent-color);
-            overflow: hidden;
+            border: 3px solid var(--accent-color);
+            flex-shrink: 0;
         }
 
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .profile-info h3 {
+        .profile-details h3 {
             font-size: 18px;
-            margin-bottom: 4px;
+            color: var(--primary-color);
         }
 
-        .profile-info p {
+        .username-tag {
+            font-size: 12px;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .bio-text {
             font-size: 13px;
-            color: #6c757d;
+            color: var(--muted-text);
+            margin-top: 3px;
         }
 
-        /* স্ট্যাটিস্টিক্স কাউন্টার */
+        /* টাইমফ্রেম স্ট্যাটস গ্রিড */
+        .stats-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 15px 0 10px 0;
+            color: var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
         }
 
-        .stat-card {
+        .stat-box {
             background-color: #f1f8f5;
-            padding: 12px;
+            padding: 10px 5px;
             border-radius: 8px;
             text-align: center;
+            border: 1px solid #d8f3dc;
         }
 
-        .stat-card .num {
-            font-size: 20px;
+        .stat-box .num {
+            font-size: 16px;
             font-weight: bold;
             color: var(--primary-color);
         }
 
-        .stat-card .label {
-            font-size: 12px;
-            color: #555;
+        .stat-box .label {
+            font-size: 10px;
+            color: var(--muted-text);
+            margin-top: 2px;
         }
 
-        /* ফর্ম ও ইনপুট */
+        /* নেভিগেশন ও ট্যাব ফিল্টার */
+        .shelf-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            background: #e9ecef;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted-text);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* ফর্ম ইনপুটসমূহ */
         .form-group {
             margin-bottom: 12px;
         }
 
         label {
             display: block;
-            font-size: 13px;
-            margin-bottom: 5px;
+            font-size: 12px;
+            margin-bottom: 4px;
             font-weight: 600;
+            color: #495057;
         }
 
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ced4da;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 13px;
+            outline: none;
         }
 
-        button {
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent-color);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        button.btn-primary {
             width: 100%;
             background-color: var(--primary-color);
             color: white;
             border: none;
             padding: 12px;
             border-radius: 6px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             transition: 0.2s;
         }
 
-        button:hover {
+        button.btn-primary:hover {
             background-color: var(--accent-color);
         }
 
-        .btn-secondary {
-            background-color: #6c757d;
-            margin-top: 8px;
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 600;
         }
 
-        /* কিতাব লিস্ট */
-        .book-item {
-            border-bottom: 1px solid #eee;
-            padding: 10px 0;
+        /* কিতাব লিস্ট আইটেম */
+        .book-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #fff;
+            position: relative;
+        }
+
+        .book-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-        }
-
-        .book-item:last-child {
-            border-bottom: none;
+            align-items: flex-start;
         }
 
         .book-title {
-            font-weight: bold;
             font-size: 15px;
+            font-weight: bold;
+            color: var(--primary-color);
         }
 
-        .book-meta {
+        .book-author {
             font-size: 12px;
-            color: #6c757d;
+            color: var(--muted-text);
         }
 
-        .badge {
-            background-color: #e2e3e5;
-            padding: 4px 8px;
-            border-radius: 12px;
+        .book-badge {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            background-color: #e9ecef;
+        }
+
+        .book-notes {
+            margin-top: 8px;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-left: 3px solid var(--accent-color);
+            font-size: 12px;
+            color: #495057;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .book-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
             font-size: 11px;
+            color: var(--muted-text);
         }
 
-        /* হিডেন ক্লাস */
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--muted-text);
+        }
+
+        .icon-btn:hover {
+            color: var(--danger-color);
+        }
+
         .hidden {
             display: none;
         }
@@ -204,64 +323,94 @@
     <!-- হেডার -->
     <header>
         <div class="logo">📖 কিতাবনামা</div>
-        <span style="font-size: 12px; background: #2d6a4f; padding: 4px 8px; border-radius: 4px;">গেস্ট মোড</span>
+        <span class="privacy-badge" id="current-privacy-label">🌐 পাবলিক</span>
     </header>
 
     <div class="container">
 
-        <!-- ১. প্রোফাইল সামারি কার্ড -->
+        <!-- ১. ইউজার প্রোফাইল সেকশন -->
         <div class="card">
-            <div class="profile-box">
-                <div class="avatar" id="user-avatar-display">👤</div>
-                <div class="profile-info">
-                    <h3 id="display-name">তালিবুল ইলম</h3>
-                    <p id="display-bio">কুতুব ও মুতালাআ ট্র্যাকার</p>
+            <div class="profile-header">
+                <div class="avatar" id="avatar-display">👤</div>
+                <div class="profile-details">
+                    <h3 id="profile-name-display">জুনায়েদ এমদাদ</h3>
+                    <div class="username-tag" id="profile-username-display">@junayed_amdad</div>
+                    <p class="bio-text" id="profile-bio-display">তালেবে ইলম | কুতুব ও মুতালাআ ট্র্যাকার</p>
                 </div>
             </div>
 
-            <!-- স্ট্যাটস -->
+            <div class="stats-title">
+                <span>📊 রিডিং অ্যানালিটিক্স</span>
+                <span style="font-size: 11px; color: var(--accent-color);" id="streak-counter">🔥 ০ দিনের স্ট্রিক</span>
+            </div>
+
+            <!-- ৪ স্তরবিশিষ্ট টাইমফ্রেম কাউন্টার -->
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="num" id="total-books-count">০</div>
-                    <div class="label">মোট পঠিত কিতাব</div>
+                <div class="stat-box">
+                    <div class="num" id="stat-today">০</div>
+                    <div class="label">আজকে (পৃষ্ঠা)</div>
                 </div>
-                <div class="stat-card">
-                    <div class="num" id="total-pages-count">০</div>
-                    <div class="label">মোট পড়া পৃষ্ঠা</div>
+                <div class="stat-box">
+                    <div class="num" id="stat-week">০</div>
+                    <div class="label">এই সপ্তাহে</div>
+                </div>
+                <div class="stat-box">
+                    <div class="num" id="stat-month">০</div>
+                    <div class="label">এই মাসে</div>
+                </div>
+                <div class="stat-box">
+                    <div class="num" id="stat-year">০</div>
+                    <div class="label">এই বছরে</div>
                 </div>
             </div>
 
-            <button class="btn-secondary" onclick="toggleProfileEdit()" style="margin-top: 15px; font-size: 13px; padding: 8px;">⚙️ প্রোফাইল এডিট করুন</button>
+            <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
+                <button class="btn-outline" onclick="toggleProfileEdit()">⚙️ প্রোফাইল ও প্রাইভেসি সেটিং</button>
+            </div>
         </div>
 
-        <!-- ২. প্রোফাইল এডিট করার হিডেন ফর্ম -->
-        <div class="card hidden" id="profile-edit-card">
-            <h4 style="margin-bottom: 12px;">প্রোফাইল কাস্টমাইজ করুন</h4>
+        <!-- ২. প্রোফাইল এডিটর (হিডেন) -->
+        <div class="card hidden" id="profile-edit-box">
+            <h4 style="margin-bottom: 12px; font-size: 14px;">প্রোফাইল কাস্টমাইজ করুন</h4>
             <div class="form-group">
-                <label>আপনার নাম</label>
-                <input type="text" id="edit-name-input" placeholder="যেমন: জুনায়েদ এমদাদ">
+                <label>নাম</label>
+                <input type="text" id="edit-name" placeholder="আপনার নাম">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>ইউজারনেম</label>
+                    <input type="text" id="edit-username" placeholder="@username">
+                </div>
+                <div class="form-group">
+                    <label>প্রাইভেসি</label>
+                    <select id="edit-privacy">
+                        <option value="🌐 পাবলিক">🌐 পাবলিক</option>
+                        <option value="🔒 প্রাইভেট">🔒 প্রাইভেট</option>
+                        <option value="👥 কাস্টম">👥 কাস্টম</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
-                <label>সংক্ষিপ্ত বায়ো</label>
-                <input type="text" id="edit-bio-input" placeholder="যেমন: তাফসীর ও ফিকহ অনুরাগী">
+                <label>বায়ো</label>
+                <input type="text" id="edit-bio" placeholder="আপনার বায়ো">
             </div>
-            <button onclick="saveProfile()">সেভ করুন</button>
+            <button class="btn-primary" onclick="saveProfile()">সেভ করুন</button>
         </div>
 
-        <!-- ৩. নতুন কিতাব যোগ করার ফর্ম -->
+        <!-- ৩. কিতাব এনট্রি ফর্ম -->
         <div class="card">
-            <h4 style="margin-bottom: 12px;">➕ নতুন কিতাব এনট্রি দিন</h4>
-            <form id="add-book-form" onsubmit="addBook(event)">
+            <h4 style="margin-bottom: 12px; font-size: 15px; color: var(--primary-color);">➕ নতুন কিতাব এনট্রি দিন</h4>
+            <form id="book-form" onsubmit="handleBookSubmit(event)">
                 <div class="form-group">
                     <label>কিতাবের নাম *</label>
                     <input type="text" id="book-title" required placeholder="যেমন: রিয়াদুস সালেহীন">
                 </div>
-                <div class="form-group">
-                    <label>লেখক / মুসান্নিফ</label>
-                    <input type="text" id="book-author" placeholder="যেমন: ইমাম নববী (রহ.)">
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <div class="form-group" style="flex: 1;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>মুসান্নিফ / লেখক</label>
+                        <input type="text" id="book-author" placeholder="যেমন: ইমাম নববী (রহ.)">
+                    </div>
+                    <div class="form-group">
                         <label>ফন / বিষয়</label>
                         <select id="book-genre">
                             <option value="হাদীস">হাদীস</option>
@@ -272,20 +421,45 @@
                             <option value="অন্যান্য">অন্যান্য</option>
                         </select>
                     </div>
-                    <div class="form-group" style="flex: 1;">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
                         <label>মোট পৃষ্ঠা</label>
                         <input type="number" id="book-pages" placeholder="যেমন: ৪৫০">
                     </div>
+                    <div class="form-group">
+                        <label>বুকশেলফ স্টেটাস</label>
+                        <select id="book-shelf">
+                            <option value="reading">📖 বর্তমানে পড়ছি</option>
+                            <option value="completed">✅ পড়া শেষ</option>
+                            <option value="plan">📌 ভবিষ্যতে পড়ব</option>
+                            <option value="hold">⏸️ পজ করা</option>
+                        </select>
+                    </div>
                 </div>
-                <button type="submit">তালিকায় যুক্ত করুন</button>
+                <div class="form-group">
+                    <label>ফাওয়েদ / গুরুত্বপূর্ণ নোটস (ঐচ্ছিক)</label>
+                    <textarea id="book-notes" rows="2" placeholder="কিতাবের বিশেষ কোনো শিক্ষণীয় বিষয় বা উক্তি..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary">বুকশেলফে সেভ করুন</button>
             </form>
         </div>
 
-        <!-- ৪. পঠিত কিতাবের তালিকা -->
+        <!-- ৪. স্মার্ট বুকশেলফ প্রদর্শন -->
         <div class="card">
-            <h4 style="margin-bottom: 12px;">📚 আমার পঠিত কিতাবসমূহ</h4>
-            <div id="books-list-container">
-                <p style="text-align: center; color: #888; font-size: 13px;">এখনো কোনো কিতাব যুক্ত করা হয়নি।</p>
+            <h4 style="margin-bottom: 12px; font-size: 15px; color: var(--primary-color);">📚 আমার বুকশেলফ</h4>
+            
+            <!-- শেলফ ফিল্টার ট্যাব -->
+            <div class="shelf-tabs">
+                <button class="tab-btn active" onclick="filterShelf('all', this)">সব কিতাব</button>
+                <button class="tab-btn" onclick="filterShelf('reading', this)">📖 বর্তমানে পড়ছি</button>
+                <button class="tab-btn" onclick="filterShelf('completed', this)">✅ পড়া শেষ</button>
+                <button class="tab-btn" onclick="filterShelf('plan', this)">📌 প্ল্যানড</button>
+                <button class="tab-btn" onclick="filterShelf('hold', this)">⏸️ পজ করা</button>
+            </div>
+
+            <div id="books-display-container">
+                <p style="text-align: center; color: var(--muted-text); font-size: 13px; padding: 20px 0;">এখনো কোনো কিতাব যুক্ত করা হয়নি।</p>
             </div>
         </div>
 
@@ -293,102 +467,166 @@
 
     <!-- জাভাস্ক্রিপ্ট লজিক -->
     <script>
-        // লোকাল স্টোরেজ থেকে ডেটা নিয়ে আসা
-        let userData = JSON.parse(localStorage.getItem('kitabnama_user')) || {
-            name: "তালিবুল ইলম",
-            bio: "কুতুব ও মুতালাআ ট্র্যাকার"
+        // বাংলা সংখ্যা রূপান্তর
+        function toBanglaNum(num) {
+            const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+            return num.toString().replace(/\d/g, d => banglaDigits[d]);
+        }
+
+        // লোকাল স্টোরেজ ডেটা
+        let userProfile = JSON.parse(localStorage.getItem('kn_profile')) || {
+            name: "জুনায়েদ এমদাদ",
+            username: "@junayed_amdad",
+            bio: "তালেবে ইলম | কুতুব ও মুতালাআ ট্র্যাকার",
+            privacy: "🌐 পাবলিক"
         };
 
-        let booksList = JSON.parse(localStorage.getItem('kitabnama_books')) || [];
+        let books = JSON.parse(localStorage.getItem('kn_books')) || [];
+        let currentFilter = 'all';
 
-        // পেজ লোড হলে ডেটা শো করা
+        // প্রাথমিক রেন্ডারিং
         window.onload = function() {
             renderProfile();
             renderBooks();
+            calculateStats();
         };
 
-        // প্রোফাইল দেখানোর ফাংশন
+        // প্রোফাইল রেন্ডার
         function renderProfile() {
-            document.getElementById('display-name').innerText = userData.name;
-            document.getElementById('display-bio').innerText = userData.bio;
-            document.getElementById('user-avatar-display').innerText = userData.name.charAt(0).toUpperCase();
+            document.getElementById('profile-name-display').innerText = userProfile.name;
+            document.getElementById('profile-username-display').innerText = userProfile.username;
+            document.getElementById('profile-bio-display').innerText = userProfile.bio;
+            document.getElementById('current-privacy-label').innerText = userProfile.privacy;
+            document.getElementById('avatar-display').innerText = userProfile.name ? userProfile.name.charAt(0) : '👤';
         }
 
-        // প্রোফাইল এডিট বক্স টগল
         function toggleProfileEdit() {
-            const editCard = document.getElementById('profile-edit-card');
-            editCard.classList.toggle('hidden');
-            document.getElementById('edit-name-input').value = userData.name;
-            document.getElementById('edit-bio-input').value = userData.bio;
+            const box = document.getElementById('profile-edit-box');
+            box.classList.toggle('hidden');
+            document.getElementById('edit-name').value = userProfile.name;
+            document.getElementById('edit-username').value = userProfile.username;
+            document.getElementById('edit-bio').value = userProfile.bio;
+            document.getElementById('edit-privacy').value = userProfile.privacy;
         }
 
-        // প্রোফাইল সেভ করা
         function saveProfile() {
-            const nameInput = document.getElementById('edit-name-input').value.trim();
-            const bioInput = document.getElementById('edit-bio-input').value.trim();
+            userProfile.name = document.getElementById('edit-name').value.trim() || userProfile.name;
+            userProfile.username = document.getElementById('edit-username').value.trim() || userProfile.username;
+            userProfile.bio = document.getElementById('edit-bio').value.trim() || userProfile.bio;
+            userProfile.privacy = document.getElementById('edit-privacy').value;
 
-            if(nameInput !== "") {
-                userData.name = nameInput;
-                userData.bio = bioInput || "কুতুব ও মুতালাআ ট্র্যাকার";
-                localStorage.setItem('kitabnama_user', JSON.stringify(userData));
-                renderProfile();
-                toggleProfileEdit();
-            }
+            localStorage.setItem('kn_profile', JSON.stringify(userProfile));
+            renderProfile();
+            toggleProfileEdit();
         }
 
-        // কিতাব যোগ করা
-        function addBook(event) {
+        // কিতাব সাবমিট
+        function handleBookSubmit(event) {
             event.preventDefault();
-            
-            const title = document.getElementById('book-title').value.trim();
-            const author = document.getElementById('book-author').value.trim() || 'অজ্ঞাত';
-            const genre = document.getElementById('book-genre').value;
-            const pages = parseInt(document.getElementById('book-pages').value) || 0;
 
             const newBook = {
                 id: Date.now(),
-                title: title,
-                author: author,
-                genre: genre,
-                pages: pages
+                title: document.getElementById('book-title').value.trim(),
+                author: document.getElementById('book-author').value.trim() || 'অজ্ঞাত',
+                genre: document.getElementById('book-genre').value,
+                pages: parseInt(document.getElementById('book-pages').value) || 0,
+                shelf: document.getElementById('book-shelf').value,
+                notes: document.getElementById('book-notes').value.trim(),
+                dateAdded: new Date().toISOString()
             };
 
-            booksList.unshift(newBook);
-            localStorage.setItem('kitabnama_books', JSON.stringify(booksList));
-            
-            // ফর্ম রিক্লিয়ার করা
-            document.getElementById('add-book-form').reset();
+            books.unshift(newBook);
+            localStorage.setItem('kn_books', JSON.stringify(books));
+
+            document.getElementById('book-form').reset();
+            renderBooks();
+            calculateStats();
+        }
+
+        // বুকশেলফ ফিল্টার
+        function filterShelf(shelfType, element) {
+            currentFilter = shelfType;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
             renderBooks();
         }
 
-        // কিতাবের তালিকা ও হিসাব আপডেট
-        function renderBooks() {
-            const container = document.getElementById('books-list-container');
-            let totalPages = 0;
+        // কিতাব ডিলিট
+        function deleteBook(id) {
+            if(confirm("আপনি কি এই কিতাবটি মুছে ফেলতে চান?")) {
+                books = books.filter(b => b.id !== id);
+                localStorage.setItem('kn_books', JSON.stringify(books));
+                renderBooks();
+                calculateStats();
+            }
+        }
 
-            if (booksList.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #888; font-size: 13px;">এখনো কোনো কিতাব যুক্ত করা হয়নি।</p>';
-            } else {
-                container.innerHTML = '';
-                booksList.forEach(book => {
-                    totalPages += book.pages;
-                    container.innerHTML += `
-                        <div class="book-item">
-                            <div>
-                                <div class="book-title">${book.title}</div>
-                                <div class="book-meta">${book.author} • ${book.pages} পৃষ্ঠা</div>
-                            </div>
-                            <span class="badge">${book.genre}</span>
-                        </div>
-                    `;
-                });
+        // কিতাব রেন্ডার
+        function renderBooks() {
+            const container = document.getElementById('books-display-container');
+            const filteredBooks = currentFilter === 'all' ? books : books.filter(b => b.shelf === currentFilter);
+
+            if (filteredBooks.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--muted-text); font-size: 13px; padding: 20px 0;">কোনো কিতাব পাওয়া যায়নি।</p>';
+                return;
             }
 
-            // কাউন্টার আপডেট
-            document.getElementById('total-books-count').innerText = booksList.length;
-            document.getElementById('total-pages-count').innerText = totalPages;
+            const shelfNames = {
+                reading: "📖 বর্তমানে পড়ছি",
+                completed: "✅ পড়া শেষ",
+                plan: "📌 প্ল্যানড",
+                hold: "⏸️ পজ করা"
+            };
+
+            container.innerHTML = '';
+            filteredBooks.forEach(book => {
+                container.innerHTML += `
+                    <div class="book-card">
+                        <div class="book-header">
+                            <div>
+                                <div class="book-title">${book.title}</div>
+                                <div class="book-author">${book.author} • ${toBanglaNum(book.pages)} পৃষ্ঠা</div>
+                            </div>
+                            <span class="book-badge">${book.genre}</span>
+                        </div>
+                        ${book.notes ? `<div class="book-notes"><strong>ফাওয়েদ/নোট:</strong> ${book.notes}</div>` : ''}
+                        <div class="book-footer">
+                            <span>স্ট্যাটাস: ${shelfNames[book.shelf]}</span>
+                            <div class="action-btns">
+                                <button class="icon-btn" onclick="deleteBook(${book.id})" title="ডিলিট">🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // টাইমফ্রেম স্ট্যাটস গণনা
+        function calculateStats() {
+            const now = new Date();
+            let todayPages = 0, weekPages = 0, monthPages = 0, yearPages = 0;
+
+            books.forEach(book => {
+                const bookDate = new Date(book.dateAdded);
+                const diffTime = Math.abs(now - bookDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                if (diffDays <= 1) todayPages += book.pages;
+                if (diffDays <= 7) weekPages += book.pages;
+                if (bookDate.getMonth() === now.getMonth() && bookDate.getFullYear() === now.getFullYear()) {
+                    monthPages += book.pages;
+                }
+                if (bookDate.getFullYear() === now.getFullYear()) {
+                    yearPages += book.pages;
+                }
+            });
+
+            document.getElementById('stat-today').innerText = toBanglaNum(todayPages);
+            document.getElementById('stat-week').innerText = toBanglaNum(weekPages);
+            document.getElementById('stat-month').innerText = toBanglaNum(monthPages);
+            document.getElementById('stat-year').innerText = toBanglaNum(yearPages);
+            document.getElementById('streak-counter').innerText = `🔥 ${toBanglaNum(books.length > 0 ? 1 : 0)} দিনের স্ট্রিক`;
         }
     </script>
 </body>
-      </html>
-              
+</html>
